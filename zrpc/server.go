@@ -44,6 +44,7 @@ func NewServer(c RpcServerConf, register internal.RegisterFn) (*RpcServer, error
 			if err != nil {
 				return nil, err
 			}
+
 		} else {
 			server, err = internal.NewRpcPubServer(c.Etcd.Hosts, c.Etcd.Key, c.ListenOn, internal.WithMetrics(metrics))
 			if err != nil {
@@ -55,6 +56,7 @@ func NewServer(c RpcServerConf, register internal.RegisterFn) (*RpcServer, error
 	}
 
 	server.SetName(c.Name)
+
 	if err = setupInterceptors(server, c, metrics); err != nil {
 		return nil, err
 	}

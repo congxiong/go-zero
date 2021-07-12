@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"net"
 	"os"
 	"strings"
 
@@ -20,6 +21,17 @@ func NewRpcPubServer(etcdEndpoints []string, etcdKey, listenOn string, opts ...S
 		pubClient := discov.NewPublisher(etcdEndpoints, etcdKey, pubListenOn)
 		return pubClient.KeepAlive()
 	}
+
+	host, port, err := net.SplitHostPort(listenOn)
+	if err != nil {
+		return keepAliveServer{}, nil
+	}
+
+	ip := net.ParseIP(host)
+	if ip == nil {
+		listenOn = "0.0.0.0:" + port
+	}
+
 	server := keepAliveServer{
 		registerEtcd: registerEtcd,
 		Server:       NewRpcServer(listenOn, opts...),
