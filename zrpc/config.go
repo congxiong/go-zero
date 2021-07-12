@@ -15,11 +15,10 @@ type (
 		Auth          bool               `json:",optional"`
 		Redis         redis.RedisKeyConf `json:",optional"`
 		StrictControl bool               `json:",optional"`
+		UserRegister  string             `json:",optional"`
 		// setting 0 means no timeout
 		Timeout      int64 `json:",default=2000"`
 		CpuThreshold int64 `json:",default=900,range=[0:1000]"`
-
-		UserRegister string `json:"default=""`
 	}
 
 	// A RpcClientConf is a rpc client config.
